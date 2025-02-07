@@ -613,6 +613,11 @@ static const struct vkd3d_instance_application_meta application_override[] = {
             VKD3D_CONFIG_FLAG_RETAIN_PSOS | VKD3D_CONFIG_FLAG_NO_STAGGERED_SUBMIT, 0 },
     /* Catch-all for benchmark and presumably the beta. There is an impossible amdgpu bug with PRT sparse. */
     { VKD3D_STRING_COMPARE_STARTS_WITH, "MonsterHunterWilds", VKD3D_CONFIG_FLAG_SKIP_NULL_SPARSE_TILES, 0 },
+    /* Monster Hunter Wilds beta
+     * Game renders to a UAV | RTV image, but discards it, and then samples from it. Leading to black screen *with FSR3 enabled.
+     * Native D3D12 AMD driver tends to disable compression for UAV in general. */
+    { VKD3D_STRING_COMPARE_STARTS_WITH, "MonsterHunterWildsBeta",
+            VKD3D_CONFIG_FLAG_DISABLE_UAV_COMPRESSION | VKD3D_CONFIG_FLAG_SKIP_NULL_SPARSE_TILES, 0 },
     /* Unreal Engine catch-all. ReBAR is a massive uplift on RX 7600 for example in Wukong.
      * AMD windows drivers also seem to have some kind of general app-opt for UE titles.
      * Use no-staggered-submit by default on UE. We've only observed issues in Wukong here, but
